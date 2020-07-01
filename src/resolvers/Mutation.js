@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs')
-
+const shortid = require('shortid')
+const sendMail = require('../helpers/mail')
 async function user(parent,args,context,info)
 {
     console.log('user mutation')
@@ -36,7 +37,9 @@ async function userSetPassword(parent,args,context,info)
 async function reset(parent,args,context,info)
 {
     console.log('user reset mutation')
-    const user = await context.prisma.updateUser({data:{code:args.code},where:{id:args.phone}})
+    const code = shortid.generate()
+    const user = await context.prisma.updateUser({data:{code},where:{id:args.phone}})
+    sendMail(user.email,"Code de réinitialisation",code)
     return user
 }
 module.exports={
