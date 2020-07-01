@@ -38,12 +38,12 @@ async function reset(parent,args,context,info)
 {
     console.log('user reset mutation')
     const code = shortid.generate()
-    let user
-    if(args.phone)
-     user = await context.prisma.updateUser({data:{code},where:{phone:args.phone}})
-    else
-    user = await context.prisma.updateUser({data:{code},where:{email:args.email}})
-     sendMail(user.email,"Code de réinitialisation",code)
+    let user =  await context.prisma.user({phone:args.phone})
+    if(!user){
+        user =  await context.prisma.user({email:args.phone})
+        
+    }
+    sendMail(user.email,"Code de réinitialisation",code)
     return user
 }
 module.exports={
