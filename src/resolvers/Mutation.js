@@ -25,7 +25,23 @@ async function signin(parent,args,context,info)
     return user
 
 }
+async function userSetPassword(parent,args,context,info)
+{
+    console.log('user SetPassword mutation')
+    let password = await bcrypt.hash(args.password,10)
+    
+    const user = await context.prisma.updateUser({data:{password:args.password},where:{id:args.user}})
+    return user
+}
+async function reset(parent,args,context,info)
+{
+    console.log('user reset mutation')
+    const user = await context.prisma.updateUser({data:{code:args.code},where:{id:args.phone}})
+    return user
+}
 module.exports={
     user,
-    signin
+    signin,
+    userSetPassword,
+    reset
 }
