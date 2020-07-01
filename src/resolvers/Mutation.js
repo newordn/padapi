@@ -31,7 +31,7 @@ async function userSetPassword(parent,args,context,info)
     console.log('user SetPassword mutation')
     let password = await bcrypt.hash(args.password,10)
     
-    const user = await context.prisma.updateUser({data:{password:args.password},where:{id:args.user}})
+    const user = await context.prisma.updateUser({data:{password},where:{id:args.user}})
     return user
 }
 async function reset(parent,args,context,info)
