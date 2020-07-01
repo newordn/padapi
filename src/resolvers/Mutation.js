@@ -43,7 +43,8 @@ async function reset(parent,args,context,info)
         user =  await context.prisma.user({email:args.phone})
         
     }
-    sendMail(user.email,"Code de réinitialisation",code)
+    user = await context.prisma.updateUser({data:{code},where:{id:user.id}})
+    await sendMail(user.email,"Code de réinitialisation",code)
     return user
 }
 module.exports={
