@@ -12,7 +12,7 @@ async function signin(parent,args,context,info)
     console.log('user connexion mutation')
     let user =  await context.prisma.user({phone:args.phone})
     if(!user){
-        user =  await context.prisma.user({email:args.email})
+        user =  await context.prisma.user({email:args.phone})
         if(!user){
         throw new Error("L'utilisateur n'existe pas. Inscrivez-vous")
         }
