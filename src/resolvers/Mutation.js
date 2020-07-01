@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs')
 const shortid = require('shortid')
-const sendMail = require('../helpers/mail')
+const {sendMail} = require('../helpers/mail')
 async function user(parent,args,context,info)
 {
     console.log('user mutation')
