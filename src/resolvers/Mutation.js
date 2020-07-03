@@ -65,8 +65,11 @@ await sendMail(user.email,"Accusé de Paiement",`Accusé de Paiement pour l'acha
 async function enrolement(parent,args,context,info)
 {
     console.log('enrolement mutation')
+    const user = await context.prisma.user({id:args.user})
+    if(user.pesees.lenght<args.nombre){
+        throw new Error("Vous n'avez pas assez de pesées")
+    }
     const enrolement = await context.prisma.createEnrolement({...args,user:{connect:{id:args.user}},code:args.code});
-const user = await context.prisma.user({id:args.user})
 let pesees = await context.prisma.user({id:args.user}).pesees({orderBy:'id_DESC',where:{active:true}})
 let ids = pesees.map(pesee=>pesee.id)
 ids = ids.splice(0,args.nombre)
