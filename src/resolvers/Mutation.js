@@ -66,11 +66,11 @@ async function enrolement(parent,args,context,info)
 {
     console.log('enrolement mutation')
     const user = await context.prisma.user({id:args.user})
-    if(user.pesees.length<args.nombre){
+    let pesees = await context.prisma.user({id:args.user}).pesees({orderBy:'id_DESC',where:{active:true}})
+    if(pesees.length<args.nombre){
         throw new Error("Vous n'avez pas assez de pesées")
     }
     const enrolement = await context.prisma.createEnrolement({...args,user:{connect:{id:args.user}},code:args.code});
-let pesees = await context.prisma.user({id:args.user}).pesees({orderBy:'id_DESC',where:{active:true}})
 let ids = pesees.map(pesee=>pesee.id)
 ids = ids.splice(0,args.nombre)
 await context.prisma.updateManyPesees({
