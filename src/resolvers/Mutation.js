@@ -66,7 +66,7 @@ async function enrolement(parent,args,context,info)
 {
     console.log('enrolement mutation')
     const user = await context.prisma.user({id:args.user})
-    if(user.pesees.lenght<args.nombre){
+    if(user.pesees.length<args.nombre){
         throw new Error("Vous n'avez pas assez de pesées")
     }
     const enrolement = await context.prisma.createEnrolement({...args,user:{connect:{id:args.user}},code:args.code});
