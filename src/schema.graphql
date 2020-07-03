@@ -3,6 +3,7 @@ type Query{
     users: [User!]!
     price: Int!
     peseesByUser(user:ID!): [Pesee!]!
+    enrolementsByUser(user:ID!): [Enrolement!]!
 }
 
 type Mutation{
@@ -11,6 +12,7 @@ type Mutation{
     signin(phone:String!,password:String!): User!
     reset(phone:String!): User!
     pesees(paymentMode:String!,nombre:Int!,user:ID!): [Pesee!]!
+    enrolement(object:String!,provenance:String!,user:ID!): Enrolement!
 }
 
 type User{
@@ -22,11 +24,20 @@ type User{
     password: String!
     code: String
     pesees: [Pesee!]
+    enrolements: [Enrolement!]
 }
 type Pesee{
     id: ID!
     price: Int!
     paymentMode:String!
+    date: String!
+    user: User!
+}
+type Enrolement{
+    id: ID!
+    code: String!
+    object: String!
+    provenance: String!
     date: String!
     user: User!
 }

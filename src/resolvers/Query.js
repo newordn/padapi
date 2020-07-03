@@ -19,9 +19,16 @@ async function peseesByUser(parent,args,context,info)
     return pesees
     
 }
+async function enrolementsByUser(parent,args,context,info)
+{
+    const enrolements= await context.prisma.user({id:args.user}).enrolements({orderBy:'id_DESC'})
+    return enrolements
+    
+}
 
 module.exports={
    users,
    price,
-   peseesByUser
+   peseesByUser,
+   enrolementsByUser
 }

@@ -3,7 +3,11 @@ module.exports = {
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-/* GraphQL */ `type AggregatePesee {
+/* GraphQL */ `type AggregateEnrolement {
+  count: Int!
+}
+
+type AggregatePesee {
   count: Int!
 }
 
@@ -17,9 +21,292 @@ type BatchPayload {
 
 scalar DateTime
 
+type Enrolement {
+  id: ID!
+  date: DateTime!
+  code: String!
+  object: String!
+  provenance: String!
+  user: User!
+}
+
+type EnrolementConnection {
+  pageInfo: PageInfo!
+  edges: [EnrolementEdge]!
+  aggregate: AggregateEnrolement!
+}
+
+input EnrolementCreateInput {
+  id: ID
+  code: String!
+  object: String!
+  provenance: String!
+  user: UserCreateOneWithoutEnrolementsInput!
+}
+
+input EnrolementCreateManyWithoutUserInput {
+  create: [EnrolementCreateWithoutUserInput!]
+  connect: [EnrolementWhereUniqueInput!]
+}
+
+input EnrolementCreateWithoutUserInput {
+  id: ID
+  code: String!
+  object: String!
+  provenance: String!
+}
+
+type EnrolementEdge {
+  node: Enrolement!
+  cursor: String!
+}
+
+enum EnrolementOrderByInput {
+  id_ASC
+  id_DESC
+  date_ASC
+  date_DESC
+  code_ASC
+  code_DESC
+  object_ASC
+  object_DESC
+  provenance_ASC
+  provenance_DESC
+}
+
+type EnrolementPreviousValues {
+  id: ID!
+  date: DateTime!
+  code: String!
+  object: String!
+  provenance: String!
+}
+
+input EnrolementScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  date: DateTime
+  date_not: DateTime
+  date_in: [DateTime!]
+  date_not_in: [DateTime!]
+  date_lt: DateTime
+  date_lte: DateTime
+  date_gt: DateTime
+  date_gte: DateTime
+  code: String
+  code_not: String
+  code_in: [String!]
+  code_not_in: [String!]
+  code_lt: String
+  code_lte: String
+  code_gt: String
+  code_gte: String
+  code_contains: String
+  code_not_contains: String
+  code_starts_with: String
+  code_not_starts_with: String
+  code_ends_with: String
+  code_not_ends_with: String
+  object: String
+  object_not: String
+  object_in: [String!]
+  object_not_in: [String!]
+  object_lt: String
+  object_lte: String
+  object_gt: String
+  object_gte: String
+  object_contains: String
+  object_not_contains: String
+  object_starts_with: String
+  object_not_starts_with: String
+  object_ends_with: String
+  object_not_ends_with: String
+  provenance: String
+  provenance_not: String
+  provenance_in: [String!]
+  provenance_not_in: [String!]
+  provenance_lt: String
+  provenance_lte: String
+  provenance_gt: String
+  provenance_gte: String
+  provenance_contains: String
+  provenance_not_contains: String
+  provenance_starts_with: String
+  provenance_not_starts_with: String
+  provenance_ends_with: String
+  provenance_not_ends_with: String
+  AND: [EnrolementScalarWhereInput!]
+  OR: [EnrolementScalarWhereInput!]
+  NOT: [EnrolementScalarWhereInput!]
+}
+
+type EnrolementSubscriptionPayload {
+  mutation: MutationType!
+  node: Enrolement
+  updatedFields: [String!]
+  previousValues: EnrolementPreviousValues
+}
+
+input EnrolementSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: EnrolementWhereInput
+  AND: [EnrolementSubscriptionWhereInput!]
+  OR: [EnrolementSubscriptionWhereInput!]
+  NOT: [EnrolementSubscriptionWhereInput!]
+}
+
+input EnrolementUpdateInput {
+  code: String
+  object: String
+  provenance: String
+  user: UserUpdateOneRequiredWithoutEnrolementsInput
+}
+
+input EnrolementUpdateManyDataInput {
+  code: String
+  object: String
+  provenance: String
+}
+
+input EnrolementUpdateManyMutationInput {
+  code: String
+  object: String
+  provenance: String
+}
+
+input EnrolementUpdateManyWithoutUserInput {
+  create: [EnrolementCreateWithoutUserInput!]
+  delete: [EnrolementWhereUniqueInput!]
+  connect: [EnrolementWhereUniqueInput!]
+  set: [EnrolementWhereUniqueInput!]
+  disconnect: [EnrolementWhereUniqueInput!]
+  update: [EnrolementUpdateWithWhereUniqueWithoutUserInput!]
+  upsert: [EnrolementUpsertWithWhereUniqueWithoutUserInput!]
+  deleteMany: [EnrolementScalarWhereInput!]
+  updateMany: [EnrolementUpdateManyWithWhereNestedInput!]
+}
+
+input EnrolementUpdateManyWithWhereNestedInput {
+  where: EnrolementScalarWhereInput!
+  data: EnrolementUpdateManyDataInput!
+}
+
+input EnrolementUpdateWithoutUserDataInput {
+  code: String
+  object: String
+  provenance: String
+}
+
+input EnrolementUpdateWithWhereUniqueWithoutUserInput {
+  where: EnrolementWhereUniqueInput!
+  data: EnrolementUpdateWithoutUserDataInput!
+}
+
+input EnrolementUpsertWithWhereUniqueWithoutUserInput {
+  where: EnrolementWhereUniqueInput!
+  update: EnrolementUpdateWithoutUserDataInput!
+  create: EnrolementCreateWithoutUserInput!
+}
+
+input EnrolementWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  date: DateTime
+  date_not: DateTime
+  date_in: [DateTime!]
+  date_not_in: [DateTime!]
+  date_lt: DateTime
+  date_lte: DateTime
+  date_gt: DateTime
+  date_gte: DateTime
+  code: String
+  code_not: String
+  code_in: [String!]
+  code_not_in: [String!]
+  code_lt: String
+  code_lte: String
+  code_gt: String
+  code_gte: String
+  code_contains: String
+  code_not_contains: String
+  code_starts_with: String
+  code_not_starts_with: String
+  code_ends_with: String
+  code_not_ends_with: String
+  object: String
+  object_not: String
+  object_in: [String!]
+  object_not_in: [String!]
+  object_lt: String
+  object_lte: String
+  object_gt: String
+  object_gte: String
+  object_contains: String
+  object_not_contains: String
+  object_starts_with: String
+  object_not_starts_with: String
+  object_ends_with: String
+  object_not_ends_with: String
+  provenance: String
+  provenance_not: String
+  provenance_in: [String!]
+  provenance_not_in: [String!]
+  provenance_lt: String
+  provenance_lte: String
+  provenance_gt: String
+  provenance_gte: String
+  provenance_contains: String
+  provenance_not_contains: String
+  provenance_starts_with: String
+  provenance_not_starts_with: String
+  provenance_ends_with: String
+  provenance_not_ends_with: String
+  user: UserWhereInput
+  AND: [EnrolementWhereInput!]
+  OR: [EnrolementWhereInput!]
+  NOT: [EnrolementWhereInput!]
+}
+
+input EnrolementWhereUniqueInput {
+  id: ID
+}
+
 scalar Long
 
 type Mutation {
+  createEnrolement(data: EnrolementCreateInput!): Enrolement!
+  updateEnrolement(data: EnrolementUpdateInput!, where: EnrolementWhereUniqueInput!): Enrolement
+  updateManyEnrolements(data: EnrolementUpdateManyMutationInput!, where: EnrolementWhereInput): BatchPayload!
+  upsertEnrolement(where: EnrolementWhereUniqueInput!, create: EnrolementCreateInput!, update: EnrolementUpdateInput!): Enrolement!
+  deleteEnrolement(where: EnrolementWhereUniqueInput!): Enrolement
+  deleteManyEnrolements(where: EnrolementWhereInput): BatchPayload!
   createPesee(data: PeseeCreateInput!): Pesee!
   updatePesee(data: PeseeUpdateInput!, where: PeseeWhereUniqueInput!): Pesee
   updateManyPesees(data: PeseeUpdateManyMutationInput!, where: PeseeWhereInput): BatchPayload!
@@ -279,6 +566,9 @@ input PeseeWhereUniqueInput {
 }
 
 type Query {
+  enrolement(where: EnrolementWhereUniqueInput!): Enrolement
+  enrolements(where: EnrolementWhereInput, orderBy: EnrolementOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Enrolement]!
+  enrolementsConnection(where: EnrolementWhereInput, orderBy: EnrolementOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): EnrolementConnection!
   pesee(where: PeseeWhereUniqueInput!): Pesee
   pesees(where: PeseeWhereInput, orderBy: PeseeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Pesee]!
   peseesConnection(where: PeseeWhereInput, orderBy: PeseeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PeseeConnection!
@@ -289,6 +579,7 @@ type Query {
 }
 
 type Subscription {
+  enrolement(where: EnrolementSubscriptionWhereInput): EnrolementSubscriptionPayload
   pesee(where: PeseeSubscriptionWhereInput): PeseeSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
@@ -302,6 +593,7 @@ type User {
   password: String!
   code: String
   pesees(where: PeseeWhereInput, orderBy: PeseeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Pesee!]
+  enrolements(where: EnrolementWhereInput, orderBy: EnrolementOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Enrolement!]
 }
 
 type UserConnection {
@@ -319,11 +611,28 @@ input UserCreateInput {
   password: String!
   code: String
   pesees: PeseeCreateManyWithoutUserInput
+  enrolements: EnrolementCreateManyWithoutUserInput
+}
+
+input UserCreateOneWithoutEnrolementsInput {
+  create: UserCreateWithoutEnrolementsInput
+  connect: UserWhereUniqueInput
 }
 
 input UserCreateOneWithoutPeseesInput {
   create: UserCreateWithoutPeseesInput
   connect: UserWhereUniqueInput
+}
+
+input UserCreateWithoutEnrolementsInput {
+  id: ID
+  name: String!
+  address: String!
+  email: String!
+  phone: String!
+  password: String!
+  code: String
+  pesees: PeseeCreateManyWithoutUserInput
 }
 
 input UserCreateWithoutPeseesInput {
@@ -334,6 +643,7 @@ input UserCreateWithoutPeseesInput {
   phone: String!
   password: String!
   code: String
+  enrolements: EnrolementCreateManyWithoutUserInput
 }
 
 type UserEdge {
@@ -394,6 +704,7 @@ input UserUpdateInput {
   password: String
   code: String
   pesees: PeseeUpdateManyWithoutUserInput
+  enrolements: EnrolementUpdateManyWithoutUserInput
 }
 
 input UserUpdateManyMutationInput {
@@ -405,11 +716,28 @@ input UserUpdateManyMutationInput {
   code: String
 }
 
+input UserUpdateOneRequiredWithoutEnrolementsInput {
+  create: UserCreateWithoutEnrolementsInput
+  update: UserUpdateWithoutEnrolementsDataInput
+  upsert: UserUpsertWithoutEnrolementsInput
+  connect: UserWhereUniqueInput
+}
+
 input UserUpdateOneRequiredWithoutPeseesInput {
   create: UserCreateWithoutPeseesInput
   update: UserUpdateWithoutPeseesDataInput
   upsert: UserUpsertWithoutPeseesInput
   connect: UserWhereUniqueInput
+}
+
+input UserUpdateWithoutEnrolementsDataInput {
+  name: String
+  address: String
+  email: String
+  phone: String
+  password: String
+  code: String
+  pesees: PeseeUpdateManyWithoutUserInput
 }
 
 input UserUpdateWithoutPeseesDataInput {
@@ -419,6 +747,12 @@ input UserUpdateWithoutPeseesDataInput {
   phone: String
   password: String
   code: String
+  enrolements: EnrolementUpdateManyWithoutUserInput
+}
+
+input UserUpsertWithoutEnrolementsInput {
+  update: UserUpdateWithoutEnrolementsDataInput!
+  create: UserCreateWithoutEnrolementsInput!
 }
 
 input UserUpsertWithoutPeseesInput {
@@ -528,6 +862,9 @@ input UserWhereInput {
   pesees_every: PeseeWhereInput
   pesees_some: PeseeWhereInput
   pesees_none: PeseeWhereInput
+  enrolements_every: EnrolementWhereInput
+  enrolements_some: EnrolementWhereInput
+  enrolements_none: EnrolementWhereInput
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]

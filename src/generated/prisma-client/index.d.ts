@@ -16,6 +16,7 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
 export type Maybe<T> = T | undefined | null;
 
 export interface Exists {
+  enrolement: (where?: EnrolementWhereInput) => Promise<boolean>;
   pesee: (where?: PeseeWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
 }
@@ -39,6 +40,25 @@ export interface Prisma {
    * Queries
    */
 
+  enrolement: (where: EnrolementWhereUniqueInput) => EnrolementNullablePromise;
+  enrolements: (args?: {
+    where?: EnrolementWhereInput;
+    orderBy?: EnrolementOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<Enrolement>;
+  enrolementsConnection: (args?: {
+    where?: EnrolementWhereInput;
+    orderBy?: EnrolementOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => EnrolementConnectionPromise;
   pesee: (where: PeseeWhereUniqueInput) => PeseeNullablePromise;
   pesees: (args?: {
     where?: PeseeWhereInput;
@@ -83,6 +103,22 @@ export interface Prisma {
    * Mutations
    */
 
+  createEnrolement: (data: EnrolementCreateInput) => EnrolementPromise;
+  updateEnrolement: (args: {
+    data: EnrolementUpdateInput;
+    where: EnrolementWhereUniqueInput;
+  }) => EnrolementPromise;
+  updateManyEnrolements: (args: {
+    data: EnrolementUpdateManyMutationInput;
+    where?: EnrolementWhereInput;
+  }) => BatchPayloadPromise;
+  upsertEnrolement: (args: {
+    where: EnrolementWhereUniqueInput;
+    create: EnrolementCreateInput;
+    update: EnrolementUpdateInput;
+  }) => EnrolementPromise;
+  deleteEnrolement: (where: EnrolementWhereUniqueInput) => EnrolementPromise;
+  deleteManyEnrolements: (where?: EnrolementWhereInput) => BatchPayloadPromise;
   createPesee: (data: PeseeCreateInput) => PeseePromise;
   updatePesee: (args: {
     data: PeseeUpdateInput;
@@ -124,6 +160,9 @@ export interface Prisma {
 }
 
 export interface Subscription {
+  enrolement: (
+    where?: EnrolementSubscriptionWhereInput
+  ) => EnrolementSubscriptionPayloadSubscription;
   pesee: (
     where?: PeseeSubscriptionWhereInput
   ) => PeseeSubscriptionPayloadSubscription;
@@ -150,6 +189,18 @@ export type PeseeOrderByInput =
   | "date_ASC"
   | "date_DESC";
 
+export type EnrolementOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "date_ASC"
+  | "date_DESC"
+  | "code_ASC"
+  | "code_DESC"
+  | "object_ASC"
+  | "object_DESC"
+  | "provenance_ASC"
+  | "provenance_DESC";
+
 export type UserOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -168,7 +219,7 @@ export type UserOrderByInput =
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export type PeseeWhereUniqueInput = AtLeastOne<{
+export type EnrolementWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
@@ -325,10 +376,88 @@ export interface UserWhereInput {
   pesees_every?: Maybe<PeseeWhereInput>;
   pesees_some?: Maybe<PeseeWhereInput>;
   pesees_none?: Maybe<PeseeWhereInput>;
+  enrolements_every?: Maybe<EnrolementWhereInput>;
+  enrolements_some?: Maybe<EnrolementWhereInput>;
+  enrolements_none?: Maybe<EnrolementWhereInput>;
   AND?: Maybe<UserWhereInput[] | UserWhereInput>;
   OR?: Maybe<UserWhereInput[] | UserWhereInput>;
   NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
 }
+
+export interface EnrolementWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  date?: Maybe<DateTimeInput>;
+  date_not?: Maybe<DateTimeInput>;
+  date_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  date_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  date_lt?: Maybe<DateTimeInput>;
+  date_lte?: Maybe<DateTimeInput>;
+  date_gt?: Maybe<DateTimeInput>;
+  date_gte?: Maybe<DateTimeInput>;
+  code?: Maybe<String>;
+  code_not?: Maybe<String>;
+  code_in?: Maybe<String[] | String>;
+  code_not_in?: Maybe<String[] | String>;
+  code_lt?: Maybe<String>;
+  code_lte?: Maybe<String>;
+  code_gt?: Maybe<String>;
+  code_gte?: Maybe<String>;
+  code_contains?: Maybe<String>;
+  code_not_contains?: Maybe<String>;
+  code_starts_with?: Maybe<String>;
+  code_not_starts_with?: Maybe<String>;
+  code_ends_with?: Maybe<String>;
+  code_not_ends_with?: Maybe<String>;
+  object?: Maybe<String>;
+  object_not?: Maybe<String>;
+  object_in?: Maybe<String[] | String>;
+  object_not_in?: Maybe<String[] | String>;
+  object_lt?: Maybe<String>;
+  object_lte?: Maybe<String>;
+  object_gt?: Maybe<String>;
+  object_gte?: Maybe<String>;
+  object_contains?: Maybe<String>;
+  object_not_contains?: Maybe<String>;
+  object_starts_with?: Maybe<String>;
+  object_not_starts_with?: Maybe<String>;
+  object_ends_with?: Maybe<String>;
+  object_not_ends_with?: Maybe<String>;
+  provenance?: Maybe<String>;
+  provenance_not?: Maybe<String>;
+  provenance_in?: Maybe<String[] | String>;
+  provenance_not_in?: Maybe<String[] | String>;
+  provenance_lt?: Maybe<String>;
+  provenance_lte?: Maybe<String>;
+  provenance_gt?: Maybe<String>;
+  provenance_gte?: Maybe<String>;
+  provenance_contains?: Maybe<String>;
+  provenance_not_contains?: Maybe<String>;
+  provenance_starts_with?: Maybe<String>;
+  provenance_not_starts_with?: Maybe<String>;
+  provenance_ends_with?: Maybe<String>;
+  provenance_not_ends_with?: Maybe<String>;
+  user?: Maybe<UserWhereInput>;
+  AND?: Maybe<EnrolementWhereInput[] | EnrolementWhereInput>;
+  OR?: Maybe<EnrolementWhereInput[] | EnrolementWhereInput>;
+  NOT?: Maybe<EnrolementWhereInput[] | EnrolementWhereInput>;
+}
+
+export type PeseeWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
 
 export type UserWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
@@ -336,61 +465,20 @@ export type UserWhereUniqueInput = AtLeastOne<{
   phone?: Maybe<String>;
 }>;
 
-export interface PeseeCreateInput {
+export interface EnrolementCreateInput {
   id?: Maybe<ID_Input>;
-  price: Int;
-  paymentMode: String;
-  user: UserCreateOneWithoutPeseesInput;
+  code: String;
+  object: String;
+  provenance: String;
+  user: UserCreateOneWithoutEnrolementsInput;
 }
 
-export interface UserCreateOneWithoutPeseesInput {
-  create?: Maybe<UserCreateWithoutPeseesInput>;
+export interface UserCreateOneWithoutEnrolementsInput {
+  create?: Maybe<UserCreateWithoutEnrolementsInput>;
   connect?: Maybe<UserWhereUniqueInput>;
 }
 
-export interface UserCreateWithoutPeseesInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-  address: String;
-  email: String;
-  phone: String;
-  password: String;
-  code?: Maybe<String>;
-}
-
-export interface PeseeUpdateInput {
-  price?: Maybe<Int>;
-  paymentMode?: Maybe<String>;
-  user?: Maybe<UserUpdateOneRequiredWithoutPeseesInput>;
-}
-
-export interface UserUpdateOneRequiredWithoutPeseesInput {
-  create?: Maybe<UserCreateWithoutPeseesInput>;
-  update?: Maybe<UserUpdateWithoutPeseesDataInput>;
-  upsert?: Maybe<UserUpsertWithoutPeseesInput>;
-  connect?: Maybe<UserWhereUniqueInput>;
-}
-
-export interface UserUpdateWithoutPeseesDataInput {
-  name?: Maybe<String>;
-  address?: Maybe<String>;
-  email?: Maybe<String>;
-  phone?: Maybe<String>;
-  password?: Maybe<String>;
-  code?: Maybe<String>;
-}
-
-export interface UserUpsertWithoutPeseesInput {
-  update: UserUpdateWithoutPeseesDataInput;
-  create: UserCreateWithoutPeseesInput;
-}
-
-export interface PeseeUpdateManyMutationInput {
-  price?: Maybe<Int>;
-  paymentMode?: Maybe<String>;
-}
-
-export interface UserCreateInput {
+export interface UserCreateWithoutEnrolementsInput {
   id?: Maybe<ID_Input>;
   name: String;
   address: String;
@@ -412,7 +500,21 @@ export interface PeseeCreateWithoutUserInput {
   paymentMode: String;
 }
 
-export interface UserUpdateInput {
+export interface EnrolementUpdateInput {
+  code?: Maybe<String>;
+  object?: Maybe<String>;
+  provenance?: Maybe<String>;
+  user?: Maybe<UserUpdateOneRequiredWithoutEnrolementsInput>;
+}
+
+export interface UserUpdateOneRequiredWithoutEnrolementsInput {
+  create?: Maybe<UserCreateWithoutEnrolementsInput>;
+  update?: Maybe<UserUpdateWithoutEnrolementsDataInput>;
+  upsert?: Maybe<UserUpsertWithoutEnrolementsInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserUpdateWithoutEnrolementsDataInput {
   name?: Maybe<String>;
   address?: Maybe<String>;
   email?: Maybe<String>;
@@ -518,6 +620,231 @@ export interface PeseeUpdateManyDataInput {
   paymentMode?: Maybe<String>;
 }
 
+export interface UserUpsertWithoutEnrolementsInput {
+  update: UserUpdateWithoutEnrolementsDataInput;
+  create: UserCreateWithoutEnrolementsInput;
+}
+
+export interface EnrolementUpdateManyMutationInput {
+  code?: Maybe<String>;
+  object?: Maybe<String>;
+  provenance?: Maybe<String>;
+}
+
+export interface PeseeCreateInput {
+  id?: Maybe<ID_Input>;
+  price: Int;
+  paymentMode: String;
+  user: UserCreateOneWithoutPeseesInput;
+}
+
+export interface UserCreateOneWithoutPeseesInput {
+  create?: Maybe<UserCreateWithoutPeseesInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserCreateWithoutPeseesInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  address: String;
+  email: String;
+  phone: String;
+  password: String;
+  code?: Maybe<String>;
+  enrolements?: Maybe<EnrolementCreateManyWithoutUserInput>;
+}
+
+export interface EnrolementCreateManyWithoutUserInput {
+  create?: Maybe<
+    EnrolementCreateWithoutUserInput[] | EnrolementCreateWithoutUserInput
+  >;
+  connect?: Maybe<EnrolementWhereUniqueInput[] | EnrolementWhereUniqueInput>;
+}
+
+export interface EnrolementCreateWithoutUserInput {
+  id?: Maybe<ID_Input>;
+  code: String;
+  object: String;
+  provenance: String;
+}
+
+export interface PeseeUpdateInput {
+  price?: Maybe<Int>;
+  paymentMode?: Maybe<String>;
+  user?: Maybe<UserUpdateOneRequiredWithoutPeseesInput>;
+}
+
+export interface UserUpdateOneRequiredWithoutPeseesInput {
+  create?: Maybe<UserCreateWithoutPeseesInput>;
+  update?: Maybe<UserUpdateWithoutPeseesDataInput>;
+  upsert?: Maybe<UserUpsertWithoutPeseesInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserUpdateWithoutPeseesDataInput {
+  name?: Maybe<String>;
+  address?: Maybe<String>;
+  email?: Maybe<String>;
+  phone?: Maybe<String>;
+  password?: Maybe<String>;
+  code?: Maybe<String>;
+  enrolements?: Maybe<EnrolementUpdateManyWithoutUserInput>;
+}
+
+export interface EnrolementUpdateManyWithoutUserInput {
+  create?: Maybe<
+    EnrolementCreateWithoutUserInput[] | EnrolementCreateWithoutUserInput
+  >;
+  delete?: Maybe<EnrolementWhereUniqueInput[] | EnrolementWhereUniqueInput>;
+  connect?: Maybe<EnrolementWhereUniqueInput[] | EnrolementWhereUniqueInput>;
+  set?: Maybe<EnrolementWhereUniqueInput[] | EnrolementWhereUniqueInput>;
+  disconnect?: Maybe<EnrolementWhereUniqueInput[] | EnrolementWhereUniqueInput>;
+  update?: Maybe<
+    | EnrolementUpdateWithWhereUniqueWithoutUserInput[]
+    | EnrolementUpdateWithWhereUniqueWithoutUserInput
+  >;
+  upsert?: Maybe<
+    | EnrolementUpsertWithWhereUniqueWithoutUserInput[]
+    | EnrolementUpsertWithWhereUniqueWithoutUserInput
+  >;
+  deleteMany?: Maybe<EnrolementScalarWhereInput[] | EnrolementScalarWhereInput>;
+  updateMany?: Maybe<
+    | EnrolementUpdateManyWithWhereNestedInput[]
+    | EnrolementUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface EnrolementUpdateWithWhereUniqueWithoutUserInput {
+  where: EnrolementWhereUniqueInput;
+  data: EnrolementUpdateWithoutUserDataInput;
+}
+
+export interface EnrolementUpdateWithoutUserDataInput {
+  code?: Maybe<String>;
+  object?: Maybe<String>;
+  provenance?: Maybe<String>;
+}
+
+export interface EnrolementUpsertWithWhereUniqueWithoutUserInput {
+  where: EnrolementWhereUniqueInput;
+  update: EnrolementUpdateWithoutUserDataInput;
+  create: EnrolementCreateWithoutUserInput;
+}
+
+export interface EnrolementScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  date?: Maybe<DateTimeInput>;
+  date_not?: Maybe<DateTimeInput>;
+  date_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  date_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  date_lt?: Maybe<DateTimeInput>;
+  date_lte?: Maybe<DateTimeInput>;
+  date_gt?: Maybe<DateTimeInput>;
+  date_gte?: Maybe<DateTimeInput>;
+  code?: Maybe<String>;
+  code_not?: Maybe<String>;
+  code_in?: Maybe<String[] | String>;
+  code_not_in?: Maybe<String[] | String>;
+  code_lt?: Maybe<String>;
+  code_lte?: Maybe<String>;
+  code_gt?: Maybe<String>;
+  code_gte?: Maybe<String>;
+  code_contains?: Maybe<String>;
+  code_not_contains?: Maybe<String>;
+  code_starts_with?: Maybe<String>;
+  code_not_starts_with?: Maybe<String>;
+  code_ends_with?: Maybe<String>;
+  code_not_ends_with?: Maybe<String>;
+  object?: Maybe<String>;
+  object_not?: Maybe<String>;
+  object_in?: Maybe<String[] | String>;
+  object_not_in?: Maybe<String[] | String>;
+  object_lt?: Maybe<String>;
+  object_lte?: Maybe<String>;
+  object_gt?: Maybe<String>;
+  object_gte?: Maybe<String>;
+  object_contains?: Maybe<String>;
+  object_not_contains?: Maybe<String>;
+  object_starts_with?: Maybe<String>;
+  object_not_starts_with?: Maybe<String>;
+  object_ends_with?: Maybe<String>;
+  object_not_ends_with?: Maybe<String>;
+  provenance?: Maybe<String>;
+  provenance_not?: Maybe<String>;
+  provenance_in?: Maybe<String[] | String>;
+  provenance_not_in?: Maybe<String[] | String>;
+  provenance_lt?: Maybe<String>;
+  provenance_lte?: Maybe<String>;
+  provenance_gt?: Maybe<String>;
+  provenance_gte?: Maybe<String>;
+  provenance_contains?: Maybe<String>;
+  provenance_not_contains?: Maybe<String>;
+  provenance_starts_with?: Maybe<String>;
+  provenance_not_starts_with?: Maybe<String>;
+  provenance_ends_with?: Maybe<String>;
+  provenance_not_ends_with?: Maybe<String>;
+  AND?: Maybe<EnrolementScalarWhereInput[] | EnrolementScalarWhereInput>;
+  OR?: Maybe<EnrolementScalarWhereInput[] | EnrolementScalarWhereInput>;
+  NOT?: Maybe<EnrolementScalarWhereInput[] | EnrolementScalarWhereInput>;
+}
+
+export interface EnrolementUpdateManyWithWhereNestedInput {
+  where: EnrolementScalarWhereInput;
+  data: EnrolementUpdateManyDataInput;
+}
+
+export interface EnrolementUpdateManyDataInput {
+  code?: Maybe<String>;
+  object?: Maybe<String>;
+  provenance?: Maybe<String>;
+}
+
+export interface UserUpsertWithoutPeseesInput {
+  update: UserUpdateWithoutPeseesDataInput;
+  create: UserCreateWithoutPeseesInput;
+}
+
+export interface PeseeUpdateManyMutationInput {
+  price?: Maybe<Int>;
+  paymentMode?: Maybe<String>;
+}
+
+export interface UserCreateInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  address: String;
+  email: String;
+  phone: String;
+  password: String;
+  code?: Maybe<String>;
+  pesees?: Maybe<PeseeCreateManyWithoutUserInput>;
+  enrolements?: Maybe<EnrolementCreateManyWithoutUserInput>;
+}
+
+export interface UserUpdateInput {
+  name?: Maybe<String>;
+  address?: Maybe<String>;
+  email?: Maybe<String>;
+  phone?: Maybe<String>;
+  password?: Maybe<String>;
+  code?: Maybe<String>;
+  pesees?: Maybe<PeseeUpdateManyWithoutUserInput>;
+  enrolements?: Maybe<EnrolementUpdateManyWithoutUserInput>;
+}
+
 export interface UserUpdateManyMutationInput {
   name?: Maybe<String>;
   address?: Maybe<String>;
@@ -525,6 +852,23 @@ export interface UserUpdateManyMutationInput {
   phone?: Maybe<String>;
   password?: Maybe<String>;
   code?: Maybe<String>;
+}
+
+export interface EnrolementSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<EnrolementWhereInput>;
+  AND?: Maybe<
+    EnrolementSubscriptionWhereInput[] | EnrolementSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    EnrolementSubscriptionWhereInput[] | EnrolementSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    EnrolementSubscriptionWhereInput[] | EnrolementSubscriptionWhereInput
+  >;
 }
 
 export interface PeseeSubscriptionWhereInput {
@@ -551,6 +895,143 @@ export interface UserSubscriptionWhereInput {
 
 export interface NodeNode {
   id: ID_Output;
+}
+
+export interface Enrolement {
+  id: ID_Output;
+  date: DateTimeOutput;
+  code: String;
+  object: String;
+  provenance: String;
+}
+
+export interface EnrolementPromise extends Promise<Enrolement>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  date: () => Promise<DateTimeOutput>;
+  code: () => Promise<String>;
+  object: () => Promise<String>;
+  provenance: () => Promise<String>;
+  user: <T = UserPromise>() => T;
+}
+
+export interface EnrolementSubscription
+  extends Promise<AsyncIterator<Enrolement>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  date: () => Promise<AsyncIterator<DateTimeOutput>>;
+  code: () => Promise<AsyncIterator<String>>;
+  object: () => Promise<AsyncIterator<String>>;
+  provenance: () => Promise<AsyncIterator<String>>;
+  user: <T = UserSubscription>() => T;
+}
+
+export interface EnrolementNullablePromise
+  extends Promise<Enrolement | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  date: () => Promise<DateTimeOutput>;
+  code: () => Promise<String>;
+  object: () => Promise<String>;
+  provenance: () => Promise<String>;
+  user: <T = UserPromise>() => T;
+}
+
+export interface User {
+  id: ID_Output;
+  name: String;
+  address: String;
+  email: String;
+  phone: String;
+  password: String;
+  code?: String;
+}
+
+export interface UserPromise extends Promise<User>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  address: () => Promise<String>;
+  email: () => Promise<String>;
+  phone: () => Promise<String>;
+  password: () => Promise<String>;
+  code: () => Promise<String>;
+  pesees: <T = FragmentableArray<Pesee>>(args?: {
+    where?: PeseeWhereInput;
+    orderBy?: PeseeOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  enrolements: <T = FragmentableArray<Enrolement>>(args?: {
+    where?: EnrolementWhereInput;
+    orderBy?: EnrolementOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface UserSubscription
+  extends Promise<AsyncIterator<User>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  address: () => Promise<AsyncIterator<String>>;
+  email: () => Promise<AsyncIterator<String>>;
+  phone: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
+  code: () => Promise<AsyncIterator<String>>;
+  pesees: <T = Promise<AsyncIterator<PeseeSubscription>>>(args?: {
+    where?: PeseeWhereInput;
+    orderBy?: PeseeOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  enrolements: <T = Promise<AsyncIterator<EnrolementSubscription>>>(args?: {
+    where?: EnrolementWhereInput;
+    orderBy?: EnrolementOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface UserNullablePromise
+  extends Promise<User | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  address: () => Promise<String>;
+  email: () => Promise<String>;
+  phone: () => Promise<String>;
+  password: () => Promise<String>;
+  code: () => Promise<String>;
+  pesees: <T = FragmentableArray<Pesee>>(args?: {
+    where?: PeseeWhereInput;
+    orderBy?: PeseeOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  enrolements: <T = FragmentableArray<Enrolement>>(args?: {
+    where?: EnrolementWhereInput;
+    orderBy?: EnrolementOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface Pesee {
@@ -588,96 +1069,25 @@ export interface PeseeNullablePromise
   user: <T = UserPromise>() => T;
 }
 
-export interface User {
-  id: ID_Output;
-  name: String;
-  address: String;
-  email: String;
-  phone: String;
-  password: String;
-  code?: String;
-}
-
-export interface UserPromise extends Promise<User>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  address: () => Promise<String>;
-  email: () => Promise<String>;
-  phone: () => Promise<String>;
-  password: () => Promise<String>;
-  code: () => Promise<String>;
-  pesees: <T = FragmentableArray<Pesee>>(args?: {
-    where?: PeseeWhereInput;
-    orderBy?: PeseeOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface UserSubscription
-  extends Promise<AsyncIterator<User>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  address: () => Promise<AsyncIterator<String>>;
-  email: () => Promise<AsyncIterator<String>>;
-  phone: () => Promise<AsyncIterator<String>>;
-  password: () => Promise<AsyncIterator<String>>;
-  code: () => Promise<AsyncIterator<String>>;
-  pesees: <T = Promise<AsyncIterator<PeseeSubscription>>>(args?: {
-    where?: PeseeWhereInput;
-    orderBy?: PeseeOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface UserNullablePromise
-  extends Promise<User | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  address: () => Promise<String>;
-  email: () => Promise<String>;
-  phone: () => Promise<String>;
-  password: () => Promise<String>;
-  code: () => Promise<String>;
-  pesees: <T = FragmentableArray<Pesee>>(args?: {
-    where?: PeseeWhereInput;
-    orderBy?: PeseeOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface PeseeConnection {
+export interface EnrolementConnection {
   pageInfo: PageInfo;
-  edges: PeseeEdge[];
+  edges: EnrolementEdge[];
 }
 
-export interface PeseeConnectionPromise
-  extends Promise<PeseeConnection>,
+export interface EnrolementConnectionPromise
+  extends Promise<EnrolementConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<PeseeEdge>>() => T;
-  aggregate: <T = AggregatePeseePromise>() => T;
+  edges: <T = FragmentableArray<EnrolementEdge>>() => T;
+  aggregate: <T = AggregateEnrolementPromise>() => T;
 }
 
-export interface PeseeConnectionSubscription
-  extends Promise<AsyncIterator<PeseeConnection>>,
+export interface EnrolementConnectionSubscription
+  extends Promise<AsyncIterator<EnrolementConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<PeseeEdgeSubscription>>>() => T;
-  aggregate: <T = AggregatePeseeSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<EnrolementEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateEnrolementSubscription>() => T;
 }
 
 export interface PageInfo {
@@ -701,6 +1111,62 @@ export interface PageInfoSubscription
   hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
   startCursor: () => Promise<AsyncIterator<String>>;
   endCursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface EnrolementEdge {
+  node: Enrolement;
+  cursor: String;
+}
+
+export interface EnrolementEdgePromise
+  extends Promise<EnrolementEdge>,
+    Fragmentable {
+  node: <T = EnrolementPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface EnrolementEdgeSubscription
+  extends Promise<AsyncIterator<EnrolementEdge>>,
+    Fragmentable {
+  node: <T = EnrolementSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateEnrolement {
+  count: Int;
+}
+
+export interface AggregateEnrolementPromise
+  extends Promise<AggregateEnrolement>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateEnrolementSubscription
+  extends Promise<AsyncIterator<AggregateEnrolement>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface PeseeConnection {
+  pageInfo: PageInfo;
+  edges: PeseeEdge[];
+}
+
+export interface PeseeConnectionPromise
+  extends Promise<PeseeConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<PeseeEdge>>() => T;
+  aggregate: <T = AggregatePeseePromise>() => T;
+}
+
+export interface PeseeConnectionSubscription
+  extends Promise<AsyncIterator<PeseeConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<PeseeEdgeSubscription>>>() => T;
+  aggregate: <T = AggregatePeseeSubscription>() => T;
 }
 
 export interface PeseeEdge {
@@ -804,6 +1270,59 @@ export interface BatchPayloadSubscription
   extends Promise<AsyncIterator<BatchPayload>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Long>>;
+}
+
+export interface EnrolementSubscriptionPayload {
+  mutation: MutationType;
+  node: Enrolement;
+  updatedFields: String[];
+  previousValues: EnrolementPreviousValues;
+}
+
+export interface EnrolementSubscriptionPayloadPromise
+  extends Promise<EnrolementSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = EnrolementPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = EnrolementPreviousValuesPromise>() => T;
+}
+
+export interface EnrolementSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<EnrolementSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = EnrolementSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = EnrolementPreviousValuesSubscription>() => T;
+}
+
+export interface EnrolementPreviousValues {
+  id: ID_Output;
+  date: DateTimeOutput;
+  code: String;
+  object: String;
+  provenance: String;
+}
+
+export interface EnrolementPreviousValuesPromise
+  extends Promise<EnrolementPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  date: () => Promise<DateTimeOutput>;
+  code: () => Promise<String>;
+  object: () => Promise<String>;
+  provenance: () => Promise<String>;
+}
+
+export interface EnrolementPreviousValuesSubscription
+  extends Promise<AsyncIterator<EnrolementPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  date: () => Promise<AsyncIterator<DateTimeOutput>>;
+  code: () => Promise<AsyncIterator<String>>;
+  object: () => Promise<AsyncIterator<String>>;
+  provenance: () => Promise<AsyncIterator<String>>;
 }
 
 export interface PeseeSubscriptionPayload {
@@ -922,16 +1441,6 @@ export type ID_Input = string | number;
 export type ID_Output = string;
 
 /*
-The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
-*/
-export type Int = number;
-
-/*
-The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
-*/
-export type String = string;
-
-/*
 DateTime scalar input type, allowing Date
 */
 export type DateTimeInput = Date | string;
@@ -940,6 +1449,16 @@ export type DateTimeInput = Date | string;
 DateTime scalar output type, which is always a string
 */
 export type DateTimeOutput = string;
+
+/*
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+*/
+export type String = string;
+
+/*
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
+*/
+export type Int = number;
 
 /*
 The `Boolean` scalar type represents `true` or `false`.
@@ -959,6 +1478,10 @@ export const models: Model[] = [
   },
   {
     name: "Pesee",
+    embedded: false
+  },
+  {
+    name: "Enrolement",
     embedded: false
   }
 ];

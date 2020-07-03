@@ -61,10 +61,20 @@ const user = await context.prisma.user({id:args.user})
 await sendMail(user.email,"Accusé de Paiement",`Accusé de Paiement pour l'achat de ${args.nombre} cela vous coute ${price*args.nombre}`)
     return pesees
 }
+
+async function enrolement(parent,args,context,info)
+{
+    console.log('enrolement mutation')
+    const enrolement = await context.prisma.createEnrolement({...args,user:{connect:{id:args.user}},code:shortid.generate()});
+const user = await context.prisma.user({id:args.user})
+await sendMail(user.email,"Recipisé d'enrolement",`Recipisé d'enrolement, Reférence ${enrolement.code}`)
+    return enrolement
+}
 module.exports={
     user,
     signin,
     userSetPassword,
     reset,
-    pesees
+    pesees,
+    enrolement
 }
