@@ -56,6 +56,8 @@ async function pesees(parent,args,context,info)
     const pesee = await context.prisma.createPesee({price:14500,user:{connect:{id:args.user}},paymentMode:args.paymentMode});
         pesees.push(pesee)
 }
+const user = await context.prisma.user({id:args.user})
+await sendMail(user.email,"Accusé de Paiement",`Accusé de Paiement pour l'achat de ${args.nombre} cela vous coute ${price*args.nombre}`)
     return pesees
 }
 module.exports={
