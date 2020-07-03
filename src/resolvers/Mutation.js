@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs')
 const shortid = require('shortid')
 const {sendMail} = require('../helpers/mail')
+const price = 14500
 async function user(parent,args,context,info)
 {
     console.log('user mutation')
@@ -53,11 +54,11 @@ async function pesees(parent,args,context,info)
     const pesees = []
     for( i=0;i<args.nombre;i++)
     {
-    const pesee = await context.prisma.createPesee({price:14500,user:{connect:{id:args.user}},paymentMode:args.paymentMode});
+    const pesee = await context.prisma.createPesee({price,user:{connect:{id:args.user}},paymentMode:args.paymentMode});
         pesees.push(pesee)
 }
 const user = await context.prisma.user({id:args.user})
-await sendMail(user.email,"Accusé de Paiement",`Accusé de Paiement pour l'achat de ${args.nombre} cela vous coute ${14500*args.nombre}`)
+await sendMail(user.email,"Accusé de Paiement",`Accusé de Paiement pour l'achat de ${args.nombre} cela vous coute ${price*args.nombre}`)
     return pesees
 }
 module.exports={
