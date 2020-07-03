@@ -187,7 +187,9 @@ export type PeseeOrderByInput =
   | "paymentMode_ASC"
   | "paymentMode_DESC"
   | "date_ASC"
-  | "date_DESC";
+  | "date_DESC"
+  | "active_ASC"
+  | "active_DESC";
 
 export type EnrolementOrderByInput =
   | "id_ASC"
@@ -198,6 +200,8 @@ export type EnrolementOrderByInput =
   | "code_DESC"
   | "object_ASC"
   | "object_DESC"
+  | "nombre_ASC"
+  | "nombre_DESC"
   | "provenance_ASC"
   | "provenance_DESC";
 
@@ -269,6 +273,8 @@ export interface PeseeWhereInput {
   date_gt?: Maybe<DateTimeInput>;
   date_gte?: Maybe<DateTimeInput>;
   user?: Maybe<UserWhereInput>;
+  active?: Maybe<Boolean>;
+  active_not?: Maybe<Boolean>;
   AND?: Maybe<PeseeWhereInput[] | PeseeWhereInput>;
   OR?: Maybe<PeseeWhereInput[] | PeseeWhereInput>;
   NOT?: Maybe<PeseeWhereInput[] | PeseeWhereInput>;
@@ -435,6 +441,14 @@ export interface EnrolementWhereInput {
   object_not_starts_with?: Maybe<String>;
   object_ends_with?: Maybe<String>;
   object_not_ends_with?: Maybe<String>;
+  nombre?: Maybe<Int>;
+  nombre_not?: Maybe<Int>;
+  nombre_in?: Maybe<Int[] | Int>;
+  nombre_not_in?: Maybe<Int[] | Int>;
+  nombre_lt?: Maybe<Int>;
+  nombre_lte?: Maybe<Int>;
+  nombre_gt?: Maybe<Int>;
+  nombre_gte?: Maybe<Int>;
   provenance?: Maybe<String>;
   provenance_not?: Maybe<String>;
   provenance_in?: Maybe<String[] | String>;
@@ -469,6 +483,7 @@ export interface EnrolementCreateInput {
   id?: Maybe<ID_Input>;
   code: String;
   object: String;
+  nombre: Int;
   provenance: String;
   user: UserCreateOneWithoutEnrolementsInput;
 }
@@ -498,11 +513,13 @@ export interface PeseeCreateWithoutUserInput {
   id?: Maybe<ID_Input>;
   price: Int;
   paymentMode: String;
+  active: Boolean;
 }
 
 export interface EnrolementUpdateInput {
   code?: Maybe<String>;
   object?: Maybe<String>;
+  nombre?: Maybe<Int>;
   provenance?: Maybe<String>;
   user?: Maybe<UserUpdateOneRequiredWithoutEnrolementsInput>;
 }
@@ -552,6 +569,7 @@ export interface PeseeUpdateWithWhereUniqueWithoutUserInput {
 export interface PeseeUpdateWithoutUserDataInput {
   price?: Maybe<Int>;
   paymentMode?: Maybe<String>;
+  active?: Maybe<Boolean>;
 }
 
 export interface PeseeUpsertWithWhereUniqueWithoutUserInput {
@@ -605,6 +623,8 @@ export interface PeseeScalarWhereInput {
   date_lte?: Maybe<DateTimeInput>;
   date_gt?: Maybe<DateTimeInput>;
   date_gte?: Maybe<DateTimeInput>;
+  active?: Maybe<Boolean>;
+  active_not?: Maybe<Boolean>;
   AND?: Maybe<PeseeScalarWhereInput[] | PeseeScalarWhereInput>;
   OR?: Maybe<PeseeScalarWhereInput[] | PeseeScalarWhereInput>;
   NOT?: Maybe<PeseeScalarWhereInput[] | PeseeScalarWhereInput>;
@@ -618,6 +638,7 @@ export interface PeseeUpdateManyWithWhereNestedInput {
 export interface PeseeUpdateManyDataInput {
   price?: Maybe<Int>;
   paymentMode?: Maybe<String>;
+  active?: Maybe<Boolean>;
 }
 
 export interface UserUpsertWithoutEnrolementsInput {
@@ -628,6 +649,7 @@ export interface UserUpsertWithoutEnrolementsInput {
 export interface EnrolementUpdateManyMutationInput {
   code?: Maybe<String>;
   object?: Maybe<String>;
+  nombre?: Maybe<Int>;
   provenance?: Maybe<String>;
 }
 
@@ -636,6 +658,7 @@ export interface PeseeCreateInput {
   price: Int;
   paymentMode: String;
   user: UserCreateOneWithoutPeseesInput;
+  active: Boolean;
 }
 
 export interface UserCreateOneWithoutPeseesInput {
@@ -665,6 +688,7 @@ export interface EnrolementCreateWithoutUserInput {
   id?: Maybe<ID_Input>;
   code: String;
   object: String;
+  nombre: Int;
   provenance: String;
 }
 
@@ -672,6 +696,7 @@ export interface PeseeUpdateInput {
   price?: Maybe<Int>;
   paymentMode?: Maybe<String>;
   user?: Maybe<UserUpdateOneRequiredWithoutPeseesInput>;
+  active?: Maybe<Boolean>;
 }
 
 export interface UserUpdateOneRequiredWithoutPeseesInput {
@@ -722,6 +747,7 @@ export interface EnrolementUpdateWithWhereUniqueWithoutUserInput {
 export interface EnrolementUpdateWithoutUserDataInput {
   code?: Maybe<String>;
   object?: Maybe<String>;
+  nombre?: Maybe<Int>;
   provenance?: Maybe<String>;
 }
 
@@ -782,6 +808,14 @@ export interface EnrolementScalarWhereInput {
   object_not_starts_with?: Maybe<String>;
   object_ends_with?: Maybe<String>;
   object_not_ends_with?: Maybe<String>;
+  nombre?: Maybe<Int>;
+  nombre_not?: Maybe<Int>;
+  nombre_in?: Maybe<Int[] | Int>;
+  nombre_not_in?: Maybe<Int[] | Int>;
+  nombre_lt?: Maybe<Int>;
+  nombre_lte?: Maybe<Int>;
+  nombre_gt?: Maybe<Int>;
+  nombre_gte?: Maybe<Int>;
   provenance?: Maybe<String>;
   provenance_not?: Maybe<String>;
   provenance_in?: Maybe<String[] | String>;
@@ -809,6 +843,7 @@ export interface EnrolementUpdateManyWithWhereNestedInput {
 export interface EnrolementUpdateManyDataInput {
   code?: Maybe<String>;
   object?: Maybe<String>;
+  nombre?: Maybe<Int>;
   provenance?: Maybe<String>;
 }
 
@@ -820,6 +855,7 @@ export interface UserUpsertWithoutPeseesInput {
 export interface PeseeUpdateManyMutationInput {
   price?: Maybe<Int>;
   paymentMode?: Maybe<String>;
+  active?: Maybe<Boolean>;
 }
 
 export interface UserCreateInput {
@@ -902,6 +938,7 @@ export interface Enrolement {
   date: DateTimeOutput;
   code: String;
   object: String;
+  nombre: Int;
   provenance: String;
 }
 
@@ -910,6 +947,7 @@ export interface EnrolementPromise extends Promise<Enrolement>, Fragmentable {
   date: () => Promise<DateTimeOutput>;
   code: () => Promise<String>;
   object: () => Promise<String>;
+  nombre: () => Promise<Int>;
   provenance: () => Promise<String>;
   user: <T = UserPromise>() => T;
 }
@@ -921,6 +959,7 @@ export interface EnrolementSubscription
   date: () => Promise<AsyncIterator<DateTimeOutput>>;
   code: () => Promise<AsyncIterator<String>>;
   object: () => Promise<AsyncIterator<String>>;
+  nombre: () => Promise<AsyncIterator<Int>>;
   provenance: () => Promise<AsyncIterator<String>>;
   user: <T = UserSubscription>() => T;
 }
@@ -932,6 +971,7 @@ export interface EnrolementNullablePromise
   date: () => Promise<DateTimeOutput>;
   code: () => Promise<String>;
   object: () => Promise<String>;
+  nombre: () => Promise<Int>;
   provenance: () => Promise<String>;
   user: <T = UserPromise>() => T;
 }
@@ -1039,6 +1079,7 @@ export interface Pesee {
   price: Int;
   paymentMode: String;
   date: DateTimeOutput;
+  active: Boolean;
 }
 
 export interface PeseePromise extends Promise<Pesee>, Fragmentable {
@@ -1047,6 +1088,7 @@ export interface PeseePromise extends Promise<Pesee>, Fragmentable {
   paymentMode: () => Promise<String>;
   date: () => Promise<DateTimeOutput>;
   user: <T = UserPromise>() => T;
+  active: () => Promise<Boolean>;
 }
 
 export interface PeseeSubscription
@@ -1057,6 +1099,7 @@ export interface PeseeSubscription
   paymentMode: () => Promise<AsyncIterator<String>>;
   date: () => Promise<AsyncIterator<DateTimeOutput>>;
   user: <T = UserSubscription>() => T;
+  active: () => Promise<AsyncIterator<Boolean>>;
 }
 
 export interface PeseeNullablePromise
@@ -1067,6 +1110,7 @@ export interface PeseeNullablePromise
   paymentMode: () => Promise<String>;
   date: () => Promise<DateTimeOutput>;
   user: <T = UserPromise>() => T;
+  active: () => Promise<Boolean>;
 }
 
 export interface EnrolementConnection {
@@ -1302,6 +1346,7 @@ export interface EnrolementPreviousValues {
   date: DateTimeOutput;
   code: String;
   object: String;
+  nombre: Int;
   provenance: String;
 }
 
@@ -1312,6 +1357,7 @@ export interface EnrolementPreviousValuesPromise
   date: () => Promise<DateTimeOutput>;
   code: () => Promise<String>;
   object: () => Promise<String>;
+  nombre: () => Promise<Int>;
   provenance: () => Promise<String>;
 }
 
@@ -1322,6 +1368,7 @@ export interface EnrolementPreviousValuesSubscription
   date: () => Promise<AsyncIterator<DateTimeOutput>>;
   code: () => Promise<AsyncIterator<String>>;
   object: () => Promise<AsyncIterator<String>>;
+  nombre: () => Promise<AsyncIterator<Int>>;
   provenance: () => Promise<AsyncIterator<String>>;
 }
 
@@ -1355,6 +1402,7 @@ export interface PeseePreviousValues {
   price: Int;
   paymentMode: String;
   date: DateTimeOutput;
+  active: Boolean;
 }
 
 export interface PeseePreviousValuesPromise
@@ -1364,6 +1412,7 @@ export interface PeseePreviousValuesPromise
   price: () => Promise<Int>;
   paymentMode: () => Promise<String>;
   date: () => Promise<DateTimeOutput>;
+  active: () => Promise<Boolean>;
 }
 
 export interface PeseePreviousValuesSubscription
@@ -1373,6 +1422,7 @@ export interface PeseePreviousValuesSubscription
   price: () => Promise<AsyncIterator<Int>>;
   paymentMode: () => Promise<AsyncIterator<String>>;
   date: () => Promise<AsyncIterator<DateTimeOutput>>;
+  active: () => Promise<AsyncIterator<Boolean>>;
 }
 
 export interface UserSubscriptionPayload {

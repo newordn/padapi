@@ -26,6 +26,7 @@ type Enrolement {
   date: DateTime!
   code: String!
   object: String!
+  nombre: Int!
   provenance: String!
   user: User!
 }
@@ -40,6 +41,7 @@ input EnrolementCreateInput {
   id: ID
   code: String!
   object: String!
+  nombre: Int!
   provenance: String!
   user: UserCreateOneWithoutEnrolementsInput!
 }
@@ -53,6 +55,7 @@ input EnrolementCreateWithoutUserInput {
   id: ID
   code: String!
   object: String!
+  nombre: Int!
   provenance: String!
 }
 
@@ -70,6 +73,8 @@ enum EnrolementOrderByInput {
   code_DESC
   object_ASC
   object_DESC
+  nombre_ASC
+  nombre_DESC
   provenance_ASC
   provenance_DESC
 }
@@ -79,6 +84,7 @@ type EnrolementPreviousValues {
   date: DateTime!
   code: String!
   object: String!
+  nombre: Int!
   provenance: String!
 }
 
@@ -133,6 +139,14 @@ input EnrolementScalarWhereInput {
   object_not_starts_with: String
   object_ends_with: String
   object_not_ends_with: String
+  nombre: Int
+  nombre_not: Int
+  nombre_in: [Int!]
+  nombre_not_in: [Int!]
+  nombre_lt: Int
+  nombre_lte: Int
+  nombre_gt: Int
+  nombre_gte: Int
   provenance: String
   provenance_not: String
   provenance_in: [String!]
@@ -173,6 +187,7 @@ input EnrolementSubscriptionWhereInput {
 input EnrolementUpdateInput {
   code: String
   object: String
+  nombre: Int
   provenance: String
   user: UserUpdateOneRequiredWithoutEnrolementsInput
 }
@@ -180,12 +195,14 @@ input EnrolementUpdateInput {
 input EnrolementUpdateManyDataInput {
   code: String
   object: String
+  nombre: Int
   provenance: String
 }
 
 input EnrolementUpdateManyMutationInput {
   code: String
   object: String
+  nombre: Int
   provenance: String
 }
 
@@ -209,6 +226,7 @@ input EnrolementUpdateManyWithWhereNestedInput {
 input EnrolementUpdateWithoutUserDataInput {
   code: String
   object: String
+  nombre: Int
   provenance: String
 }
 
@@ -274,6 +292,14 @@ input EnrolementWhereInput {
   object_not_starts_with: String
   object_ends_with: String
   object_not_ends_with: String
+  nombre: Int
+  nombre_not: Int
+  nombre_in: [Int!]
+  nombre_not_in: [Int!]
+  nombre_lt: Int
+  nombre_lte: Int
+  nombre_gt: Int
+  nombre_gte: Int
   provenance: String
   provenance_not: String
   provenance_in: [String!]
@@ -344,6 +370,7 @@ type Pesee {
   paymentMode: String!
   date: DateTime!
   user: User!
+  active: Boolean!
 }
 
 type PeseeConnection {
@@ -357,6 +384,7 @@ input PeseeCreateInput {
   price: Int!
   paymentMode: String!
   user: UserCreateOneWithoutPeseesInput!
+  active: Boolean!
 }
 
 input PeseeCreateManyWithoutUserInput {
@@ -368,6 +396,7 @@ input PeseeCreateWithoutUserInput {
   id: ID
   price: Int!
   paymentMode: String!
+  active: Boolean!
 }
 
 type PeseeEdge {
@@ -384,6 +413,8 @@ enum PeseeOrderByInput {
   paymentMode_DESC
   date_ASC
   date_DESC
+  active_ASC
+  active_DESC
 }
 
 type PeseePreviousValues {
@@ -391,6 +422,7 @@ type PeseePreviousValues {
   price: Int!
   paymentMode: String!
   date: DateTime!
+  active: Boolean!
 }
 
 input PeseeScalarWhereInput {
@@ -438,6 +470,8 @@ input PeseeScalarWhereInput {
   date_lte: DateTime
   date_gt: DateTime
   date_gte: DateTime
+  active: Boolean
+  active_not: Boolean
   AND: [PeseeScalarWhereInput!]
   OR: [PeseeScalarWhereInput!]
   NOT: [PeseeScalarWhereInput!]
@@ -465,16 +499,19 @@ input PeseeUpdateInput {
   price: Int
   paymentMode: String
   user: UserUpdateOneRequiredWithoutPeseesInput
+  active: Boolean
 }
 
 input PeseeUpdateManyDataInput {
   price: Int
   paymentMode: String
+  active: Boolean
 }
 
 input PeseeUpdateManyMutationInput {
   price: Int
   paymentMode: String
+  active: Boolean
 }
 
 input PeseeUpdateManyWithoutUserInput {
@@ -497,6 +534,7 @@ input PeseeUpdateManyWithWhereNestedInput {
 input PeseeUpdateWithoutUserDataInput {
   price: Int
   paymentMode: String
+  active: Boolean
 }
 
 input PeseeUpdateWithWhereUniqueWithoutUserInput {
@@ -556,6 +594,8 @@ input PeseeWhereInput {
   date_gt: DateTime
   date_gte: DateTime
   user: UserWhereInput
+  active: Boolean
+  active_not: Boolean
   AND: [PeseeWhereInput!]
   OR: [PeseeWhereInput!]
   NOT: [PeseeWhereInput!]

@@ -12,7 +12,7 @@ type Mutation{
     signin(phone:String!,password:String!): User!
     reset(phone:String!): User!
     pesees(paymentMode:String!,nombre:Int!,user:ID!): [Pesee!]!
-    enrolement(object:String!,provenance:String!,user:ID!): Enrolement!
+    enrolement(object:String!,provenance:String!,user:ID!,code:String!,nombre:Int!): Enrolement!
 }
 
 type User{
@@ -32,11 +32,13 @@ type Pesee{
     paymentMode:String!
     date: String!
     user: User!
+    active: Boolean!
 }
 type Enrolement{
     id: ID!
     code: String!
     object: String!
+    nombre:Int!
     provenance: String!
     date: String!
     user: User!

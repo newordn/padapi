@@ -54,7 +54,7 @@ async function pesees(parent,args,context,info)
     const pesees = []
     for( i=0;i<args.nombre;i++)
     {
-    const pesee = await context.prisma.createPesee({price,user:{connect:{id:args.user}},paymentMode:args.paymentMode});
+    const pesee = await context.prisma.createPesee({price,user:{connect:{id:args.user}},paymentMode:args.paymentMode,active:true});
         pesees.push(pesee)
 }
 const user = await context.prisma.user({id:args.user})
@@ -65,9 +65,18 @@ await sendMail(user.email,"Accusé de Paiement",`Accusé de Paiement pour l'acha
 async function enrolement(parent,args,context,info)
 {
     console.log('enrolement mutation')
-    const enrolement = await context.prisma.createEnrolement({...args,user:{connect:{id:args.user}},code:shortid.generate()});
+    const enrolement = await context.prisma.createEnrolement({...args,user:{connect:{id:args.user}},code:args.code});
 const user = await context.prisma.user({id:args.user})
-await sendMail(user.email,"Recipisé d'enrolement",`Recipisé d'enrolement, Reférence ${enrolement.code}`)
+let pesees = await context.prisma.user({id:args.user}).pesees({orderBy:'id_DESC',where:{active:true}})
+let ids = pesees.map(pesee=>pesee.id)
+ids = ids.splice(0,args.nombre)
+await context.prisma.updateManyPesees({
+    where: {
+        id_in: ids,
+    },
+    data: { active: false },
+})
+//await sendMail(user.email,"Recipisé d'enrolement",`Recipisé d'enrolement, Reférence ${enrolement.id}`)
     return enrolement
 }
 module.exports={

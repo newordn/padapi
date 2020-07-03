@@ -15,12 +15,14 @@ type Pesee{
     paymentMode:String!
     date: DateTime! @createdAt
     user: User! @relation(name:"UserPesees")
+    active: Boolean!
 }
 type Enrolement{
     id: ID! @id
     date: DateTime! @createdAt
     code: String!
     object: String!
+    nombre: Int!
     provenance: String!
     user: User! @relation(name:"UserEnrolement")
 }

@@ -15,7 +15,7 @@ async function price(parent,args,context,info)
 }
 async function peseesByUser(parent,args,context,info)
 {
-    const pesees = await context.prisma.user({id:args.user}).pesees({orderBy:'id_DESC'})
+    const pesees = await context.prisma.user({id:args.user}).pesees({orderBy:'id_DESC',where:{active:true}})
     return pesees
     
 }
