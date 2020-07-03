@@ -3,7 +3,11 @@ module.exports = {
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-/* GraphQL */ `type AggregateUser {
+/* GraphQL */ `type AggregatePesee {
+  count: Int!
+}
+
+type AggregateUser {
   count: Int!
 }
 
@@ -11,9 +15,17 @@ type BatchPayload {
   count: Long!
 }
 
+scalar DateTime
+
 scalar Long
 
 type Mutation {
+  createPesee(data: PeseeCreateInput!): Pesee!
+  updatePesee(data: PeseeUpdateInput!, where: PeseeWhereUniqueInput!): Pesee
+  updateManyPesees(data: PeseeUpdateManyMutationInput!, where: PeseeWhereInput): BatchPayload!
+  upsertPesee(where: PeseeWhereUniqueInput!, create: PeseeCreateInput!, update: PeseeUpdateInput!): Pesee!
+  deletePesee(where: PeseeWhereUniqueInput!): Pesee
+  deleteManyPesees(where: PeseeWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
@@ -39,7 +51,237 @@ type PageInfo {
   endCursor: String
 }
 
+type Pesee {
+  id: ID!
+  price: Int!
+  paymentMode: String!
+  date: DateTime!
+  user: User!
+}
+
+type PeseeConnection {
+  pageInfo: PageInfo!
+  edges: [PeseeEdge]!
+  aggregate: AggregatePesee!
+}
+
+input PeseeCreateInput {
+  id: ID
+  price: Int!
+  paymentMode: String!
+  user: UserCreateOneWithoutPeseesInput!
+}
+
+input PeseeCreateManyWithoutUserInput {
+  create: [PeseeCreateWithoutUserInput!]
+  connect: [PeseeWhereUniqueInput!]
+}
+
+input PeseeCreateWithoutUserInput {
+  id: ID
+  price: Int!
+  paymentMode: String!
+}
+
+type PeseeEdge {
+  node: Pesee!
+  cursor: String!
+}
+
+enum PeseeOrderByInput {
+  id_ASC
+  id_DESC
+  price_ASC
+  price_DESC
+  paymentMode_ASC
+  paymentMode_DESC
+  date_ASC
+  date_DESC
+}
+
+type PeseePreviousValues {
+  id: ID!
+  price: Int!
+  paymentMode: String!
+  date: DateTime!
+}
+
+input PeseeScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  price: Int
+  price_not: Int
+  price_in: [Int!]
+  price_not_in: [Int!]
+  price_lt: Int
+  price_lte: Int
+  price_gt: Int
+  price_gte: Int
+  paymentMode: String
+  paymentMode_not: String
+  paymentMode_in: [String!]
+  paymentMode_not_in: [String!]
+  paymentMode_lt: String
+  paymentMode_lte: String
+  paymentMode_gt: String
+  paymentMode_gte: String
+  paymentMode_contains: String
+  paymentMode_not_contains: String
+  paymentMode_starts_with: String
+  paymentMode_not_starts_with: String
+  paymentMode_ends_with: String
+  paymentMode_not_ends_with: String
+  date: DateTime
+  date_not: DateTime
+  date_in: [DateTime!]
+  date_not_in: [DateTime!]
+  date_lt: DateTime
+  date_lte: DateTime
+  date_gt: DateTime
+  date_gte: DateTime
+  AND: [PeseeScalarWhereInput!]
+  OR: [PeseeScalarWhereInput!]
+  NOT: [PeseeScalarWhereInput!]
+}
+
+type PeseeSubscriptionPayload {
+  mutation: MutationType!
+  node: Pesee
+  updatedFields: [String!]
+  previousValues: PeseePreviousValues
+}
+
+input PeseeSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: PeseeWhereInput
+  AND: [PeseeSubscriptionWhereInput!]
+  OR: [PeseeSubscriptionWhereInput!]
+  NOT: [PeseeSubscriptionWhereInput!]
+}
+
+input PeseeUpdateInput {
+  price: Int
+  paymentMode: String
+  user: UserUpdateOneRequiredWithoutPeseesInput
+}
+
+input PeseeUpdateManyDataInput {
+  price: Int
+  paymentMode: String
+}
+
+input PeseeUpdateManyMutationInput {
+  price: Int
+  paymentMode: String
+}
+
+input PeseeUpdateManyWithoutUserInput {
+  create: [PeseeCreateWithoutUserInput!]
+  delete: [PeseeWhereUniqueInput!]
+  connect: [PeseeWhereUniqueInput!]
+  set: [PeseeWhereUniqueInput!]
+  disconnect: [PeseeWhereUniqueInput!]
+  update: [PeseeUpdateWithWhereUniqueWithoutUserInput!]
+  upsert: [PeseeUpsertWithWhereUniqueWithoutUserInput!]
+  deleteMany: [PeseeScalarWhereInput!]
+  updateMany: [PeseeUpdateManyWithWhereNestedInput!]
+}
+
+input PeseeUpdateManyWithWhereNestedInput {
+  where: PeseeScalarWhereInput!
+  data: PeseeUpdateManyDataInput!
+}
+
+input PeseeUpdateWithoutUserDataInput {
+  price: Int
+  paymentMode: String
+}
+
+input PeseeUpdateWithWhereUniqueWithoutUserInput {
+  where: PeseeWhereUniqueInput!
+  data: PeseeUpdateWithoutUserDataInput!
+}
+
+input PeseeUpsertWithWhereUniqueWithoutUserInput {
+  where: PeseeWhereUniqueInput!
+  update: PeseeUpdateWithoutUserDataInput!
+  create: PeseeCreateWithoutUserInput!
+}
+
+input PeseeWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  price: Int
+  price_not: Int
+  price_in: [Int!]
+  price_not_in: [Int!]
+  price_lt: Int
+  price_lte: Int
+  price_gt: Int
+  price_gte: Int
+  paymentMode: String
+  paymentMode_not: String
+  paymentMode_in: [String!]
+  paymentMode_not_in: [String!]
+  paymentMode_lt: String
+  paymentMode_lte: String
+  paymentMode_gt: String
+  paymentMode_gte: String
+  paymentMode_contains: String
+  paymentMode_not_contains: String
+  paymentMode_starts_with: String
+  paymentMode_not_starts_with: String
+  paymentMode_ends_with: String
+  paymentMode_not_ends_with: String
+  date: DateTime
+  date_not: DateTime
+  date_in: [DateTime!]
+  date_not_in: [DateTime!]
+  date_lt: DateTime
+  date_lte: DateTime
+  date_gt: DateTime
+  date_gte: DateTime
+  user: UserWhereInput
+  AND: [PeseeWhereInput!]
+  OR: [PeseeWhereInput!]
+  NOT: [PeseeWhereInput!]
+}
+
+input PeseeWhereUniqueInput {
+  id: ID
+}
+
 type Query {
+  pesee(where: PeseeWhereUniqueInput!): Pesee
+  pesees(where: PeseeWhereInput, orderBy: PeseeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Pesee]!
+  peseesConnection(where: PeseeWhereInput, orderBy: PeseeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PeseeConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
@@ -47,6 +289,7 @@ type Query {
 }
 
 type Subscription {
+  pesee(where: PeseeSubscriptionWhereInput): PeseeSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
 
@@ -58,6 +301,7 @@ type User {
   phone: String!
   password: String!
   code: String
+  pesees(where: PeseeWhereInput, orderBy: PeseeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Pesee!]
 }
 
 type UserConnection {
@@ -67,6 +311,22 @@ type UserConnection {
 }
 
 input UserCreateInput {
+  id: ID
+  name: String!
+  address: String!
+  email: String!
+  phone: String!
+  password: String!
+  code: String
+  pesees: PeseeCreateManyWithoutUserInput
+}
+
+input UserCreateOneWithoutPeseesInput {
+  create: UserCreateWithoutPeseesInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateWithoutPeseesInput {
   id: ID
   name: String!
   address: String!
@@ -133,6 +393,7 @@ input UserUpdateInput {
   phone: String
   password: String
   code: String
+  pesees: PeseeUpdateManyWithoutUserInput
 }
 
 input UserUpdateManyMutationInput {
@@ -142,6 +403,27 @@ input UserUpdateManyMutationInput {
   phone: String
   password: String
   code: String
+}
+
+input UserUpdateOneRequiredWithoutPeseesInput {
+  create: UserCreateWithoutPeseesInput
+  update: UserUpdateWithoutPeseesDataInput
+  upsert: UserUpsertWithoutPeseesInput
+  connect: UserWhereUniqueInput
+}
+
+input UserUpdateWithoutPeseesDataInput {
+  name: String
+  address: String
+  email: String
+  phone: String
+  password: String
+  code: String
+}
+
+input UserUpsertWithoutPeseesInput {
+  update: UserUpdateWithoutPeseesDataInput!
+  create: UserCreateWithoutPeseesInput!
 }
 
 input UserWhereInput {
@@ -243,6 +525,9 @@ input UserWhereInput {
   code_not_starts_with: String
   code_ends_with: String
   code_not_ends_with: String
+  pesees_every: PeseeWhereInput
+  pesees_some: PeseeWhereInput
+  pesees_none: PeseeWhereInput
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]

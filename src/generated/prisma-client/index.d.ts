@@ -16,6 +16,7 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
 export type Maybe<T> = T | undefined | null;
 
 export interface Exists {
+  pesee: (where?: PeseeWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
 }
 
@@ -38,6 +39,25 @@ export interface Prisma {
    * Queries
    */
 
+  pesee: (where: PeseeWhereUniqueInput) => PeseeNullablePromise;
+  pesees: (args?: {
+    where?: PeseeWhereInput;
+    orderBy?: PeseeOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<Pesee>;
+  peseesConnection: (args?: {
+    where?: PeseeWhereInput;
+    orderBy?: PeseeOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => PeseeConnectionPromise;
   user: (where: UserWhereUniqueInput) => UserNullablePromise;
   users: (args?: {
     where?: UserWhereInput;
@@ -63,6 +83,22 @@ export interface Prisma {
    * Mutations
    */
 
+  createPesee: (data: PeseeCreateInput) => PeseePromise;
+  updatePesee: (args: {
+    data: PeseeUpdateInput;
+    where: PeseeWhereUniqueInput;
+  }) => PeseePromise;
+  updateManyPesees: (args: {
+    data: PeseeUpdateManyMutationInput;
+    where?: PeseeWhereInput;
+  }) => BatchPayloadPromise;
+  upsertPesee: (args: {
+    where: PeseeWhereUniqueInput;
+    create: PeseeCreateInput;
+    update: PeseeUpdateInput;
+  }) => PeseePromise;
+  deletePesee: (where: PeseeWhereUniqueInput) => PeseePromise;
+  deleteManyPesees: (where?: PeseeWhereInput) => BatchPayloadPromise;
   createUser: (data: UserCreateInput) => UserPromise;
   updateUser: (args: {
     data: UserUpdateInput;
@@ -88,6 +124,9 @@ export interface Prisma {
 }
 
 export interface Subscription {
+  pesee: (
+    where?: PeseeSubscriptionWhereInput
+  ) => PeseeSubscriptionPayloadSubscription;
   user: (
     where?: UserSubscriptionWhereInput
   ) => UserSubscriptionPayloadSubscription;
@@ -100,6 +139,16 @@ export interface ClientConstructor<T> {
 /**
  * Types
  */
+
+export type PeseeOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "price_ASC"
+  | "price_DESC"
+  | "paymentMode_ASC"
+  | "paymentMode_DESC"
+  | "date_ASC"
+  | "date_DESC";
 
 export type UserOrderByInput =
   | "id_ASC"
@@ -119,11 +168,60 @@ export type UserOrderByInput =
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export type UserWhereUniqueInput = AtLeastOne<{
+export type PeseeWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
-  email?: Maybe<String>;
-  phone?: Maybe<String>;
 }>;
+
+export interface PeseeWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  price?: Maybe<Int>;
+  price_not?: Maybe<Int>;
+  price_in?: Maybe<Int[] | Int>;
+  price_not_in?: Maybe<Int[] | Int>;
+  price_lt?: Maybe<Int>;
+  price_lte?: Maybe<Int>;
+  price_gt?: Maybe<Int>;
+  price_gte?: Maybe<Int>;
+  paymentMode?: Maybe<String>;
+  paymentMode_not?: Maybe<String>;
+  paymentMode_in?: Maybe<String[] | String>;
+  paymentMode_not_in?: Maybe<String[] | String>;
+  paymentMode_lt?: Maybe<String>;
+  paymentMode_lte?: Maybe<String>;
+  paymentMode_gt?: Maybe<String>;
+  paymentMode_gte?: Maybe<String>;
+  paymentMode_contains?: Maybe<String>;
+  paymentMode_not_contains?: Maybe<String>;
+  paymentMode_starts_with?: Maybe<String>;
+  paymentMode_not_starts_with?: Maybe<String>;
+  paymentMode_ends_with?: Maybe<String>;
+  paymentMode_not_ends_with?: Maybe<String>;
+  date?: Maybe<DateTimeInput>;
+  date_not?: Maybe<DateTimeInput>;
+  date_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  date_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  date_lt?: Maybe<DateTimeInput>;
+  date_lte?: Maybe<DateTimeInput>;
+  date_gt?: Maybe<DateTimeInput>;
+  date_gte?: Maybe<DateTimeInput>;
+  user?: Maybe<UserWhereInput>;
+  AND?: Maybe<PeseeWhereInput[] | PeseeWhereInput>;
+  OR?: Maybe<PeseeWhereInput[] | PeseeWhereInput>;
+  NOT?: Maybe<PeseeWhereInput[] | PeseeWhereInput>;
+}
 
 export interface UserWhereInput {
   id?: Maybe<ID_Input>;
@@ -224,9 +322,72 @@ export interface UserWhereInput {
   code_not_starts_with?: Maybe<String>;
   code_ends_with?: Maybe<String>;
   code_not_ends_with?: Maybe<String>;
+  pesees_every?: Maybe<PeseeWhereInput>;
+  pesees_some?: Maybe<PeseeWhereInput>;
+  pesees_none?: Maybe<PeseeWhereInput>;
   AND?: Maybe<UserWhereInput[] | UserWhereInput>;
   OR?: Maybe<UserWhereInput[] | UserWhereInput>;
   NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
+}
+
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  email?: Maybe<String>;
+  phone?: Maybe<String>;
+}>;
+
+export interface PeseeCreateInput {
+  id?: Maybe<ID_Input>;
+  price: Int;
+  paymentMode: String;
+  user: UserCreateOneWithoutPeseesInput;
+}
+
+export interface UserCreateOneWithoutPeseesInput {
+  create?: Maybe<UserCreateWithoutPeseesInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserCreateWithoutPeseesInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  address: String;
+  email: String;
+  phone: String;
+  password: String;
+  code?: Maybe<String>;
+}
+
+export interface PeseeUpdateInput {
+  price?: Maybe<Int>;
+  paymentMode?: Maybe<String>;
+  user?: Maybe<UserUpdateOneRequiredWithoutPeseesInput>;
+}
+
+export interface UserUpdateOneRequiredWithoutPeseesInput {
+  create?: Maybe<UserCreateWithoutPeseesInput>;
+  update?: Maybe<UserUpdateWithoutPeseesDataInput>;
+  upsert?: Maybe<UserUpsertWithoutPeseesInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserUpdateWithoutPeseesDataInput {
+  name?: Maybe<String>;
+  address?: Maybe<String>;
+  email?: Maybe<String>;
+  phone?: Maybe<String>;
+  password?: Maybe<String>;
+  code?: Maybe<String>;
+}
+
+export interface UserUpsertWithoutPeseesInput {
+  update: UserUpdateWithoutPeseesDataInput;
+  create: UserCreateWithoutPeseesInput;
+}
+
+export interface PeseeUpdateManyMutationInput {
+  price?: Maybe<Int>;
+  paymentMode?: Maybe<String>;
 }
 
 export interface UserCreateInput {
@@ -237,6 +398,18 @@ export interface UserCreateInput {
   phone: String;
   password: String;
   code?: Maybe<String>;
+  pesees?: Maybe<PeseeCreateManyWithoutUserInput>;
+}
+
+export interface PeseeCreateManyWithoutUserInput {
+  create?: Maybe<PeseeCreateWithoutUserInput[] | PeseeCreateWithoutUserInput>;
+  connect?: Maybe<PeseeWhereUniqueInput[] | PeseeWhereUniqueInput>;
+}
+
+export interface PeseeCreateWithoutUserInput {
+  id?: Maybe<ID_Input>;
+  price: Int;
+  paymentMode: String;
 }
 
 export interface UserUpdateInput {
@@ -246,6 +419,103 @@ export interface UserUpdateInput {
   phone?: Maybe<String>;
   password?: Maybe<String>;
   code?: Maybe<String>;
+  pesees?: Maybe<PeseeUpdateManyWithoutUserInput>;
+}
+
+export interface PeseeUpdateManyWithoutUserInput {
+  create?: Maybe<PeseeCreateWithoutUserInput[] | PeseeCreateWithoutUserInput>;
+  delete?: Maybe<PeseeWhereUniqueInput[] | PeseeWhereUniqueInput>;
+  connect?: Maybe<PeseeWhereUniqueInput[] | PeseeWhereUniqueInput>;
+  set?: Maybe<PeseeWhereUniqueInput[] | PeseeWhereUniqueInput>;
+  disconnect?: Maybe<PeseeWhereUniqueInput[] | PeseeWhereUniqueInput>;
+  update?: Maybe<
+    | PeseeUpdateWithWhereUniqueWithoutUserInput[]
+    | PeseeUpdateWithWhereUniqueWithoutUserInput
+  >;
+  upsert?: Maybe<
+    | PeseeUpsertWithWhereUniqueWithoutUserInput[]
+    | PeseeUpsertWithWhereUniqueWithoutUserInput
+  >;
+  deleteMany?: Maybe<PeseeScalarWhereInput[] | PeseeScalarWhereInput>;
+  updateMany?: Maybe<
+    PeseeUpdateManyWithWhereNestedInput[] | PeseeUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface PeseeUpdateWithWhereUniqueWithoutUserInput {
+  where: PeseeWhereUniqueInput;
+  data: PeseeUpdateWithoutUserDataInput;
+}
+
+export interface PeseeUpdateWithoutUserDataInput {
+  price?: Maybe<Int>;
+  paymentMode?: Maybe<String>;
+}
+
+export interface PeseeUpsertWithWhereUniqueWithoutUserInput {
+  where: PeseeWhereUniqueInput;
+  update: PeseeUpdateWithoutUserDataInput;
+  create: PeseeCreateWithoutUserInput;
+}
+
+export interface PeseeScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  price?: Maybe<Int>;
+  price_not?: Maybe<Int>;
+  price_in?: Maybe<Int[] | Int>;
+  price_not_in?: Maybe<Int[] | Int>;
+  price_lt?: Maybe<Int>;
+  price_lte?: Maybe<Int>;
+  price_gt?: Maybe<Int>;
+  price_gte?: Maybe<Int>;
+  paymentMode?: Maybe<String>;
+  paymentMode_not?: Maybe<String>;
+  paymentMode_in?: Maybe<String[] | String>;
+  paymentMode_not_in?: Maybe<String[] | String>;
+  paymentMode_lt?: Maybe<String>;
+  paymentMode_lte?: Maybe<String>;
+  paymentMode_gt?: Maybe<String>;
+  paymentMode_gte?: Maybe<String>;
+  paymentMode_contains?: Maybe<String>;
+  paymentMode_not_contains?: Maybe<String>;
+  paymentMode_starts_with?: Maybe<String>;
+  paymentMode_not_starts_with?: Maybe<String>;
+  paymentMode_ends_with?: Maybe<String>;
+  paymentMode_not_ends_with?: Maybe<String>;
+  date?: Maybe<DateTimeInput>;
+  date_not?: Maybe<DateTimeInput>;
+  date_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  date_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  date_lt?: Maybe<DateTimeInput>;
+  date_lte?: Maybe<DateTimeInput>;
+  date_gt?: Maybe<DateTimeInput>;
+  date_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<PeseeScalarWhereInput[] | PeseeScalarWhereInput>;
+  OR?: Maybe<PeseeScalarWhereInput[] | PeseeScalarWhereInput>;
+  NOT?: Maybe<PeseeScalarWhereInput[] | PeseeScalarWhereInput>;
+}
+
+export interface PeseeUpdateManyWithWhereNestedInput {
+  where: PeseeScalarWhereInput;
+  data: PeseeUpdateManyDataInput;
+}
+
+export interface PeseeUpdateManyDataInput {
+  price?: Maybe<Int>;
+  paymentMode?: Maybe<String>;
 }
 
 export interface UserUpdateManyMutationInput {
@@ -255,6 +525,17 @@ export interface UserUpdateManyMutationInput {
   phone?: Maybe<String>;
   password?: Maybe<String>;
   code?: Maybe<String>;
+}
+
+export interface PeseeSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<PeseeWhereInput>;
+  AND?: Maybe<PeseeSubscriptionWhereInput[] | PeseeSubscriptionWhereInput>;
+  OR?: Maybe<PeseeSubscriptionWhereInput[] | PeseeSubscriptionWhereInput>;
+  NOT?: Maybe<PeseeSubscriptionWhereInput[] | PeseeSubscriptionWhereInput>;
 }
 
 export interface UserSubscriptionWhereInput {
@@ -270,6 +551,41 @@ export interface UserSubscriptionWhereInput {
 
 export interface NodeNode {
   id: ID_Output;
+}
+
+export interface Pesee {
+  id: ID_Output;
+  price: Int;
+  paymentMode: String;
+  date: DateTimeOutput;
+}
+
+export interface PeseePromise extends Promise<Pesee>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  price: () => Promise<Int>;
+  paymentMode: () => Promise<String>;
+  date: () => Promise<DateTimeOutput>;
+  user: <T = UserPromise>() => T;
+}
+
+export interface PeseeSubscription
+  extends Promise<AsyncIterator<Pesee>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  price: () => Promise<AsyncIterator<Int>>;
+  paymentMode: () => Promise<AsyncIterator<String>>;
+  date: () => Promise<AsyncIterator<DateTimeOutput>>;
+  user: <T = UserSubscription>() => T;
+}
+
+export interface PeseeNullablePromise
+  extends Promise<Pesee | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  price: () => Promise<Int>;
+  paymentMode: () => Promise<String>;
+  date: () => Promise<DateTimeOutput>;
+  user: <T = UserPromise>() => T;
 }
 
 export interface User {
@@ -290,6 +606,15 @@ export interface UserPromise extends Promise<User>, Fragmentable {
   phone: () => Promise<String>;
   password: () => Promise<String>;
   code: () => Promise<String>;
+  pesees: <T = FragmentableArray<Pesee>>(args?: {
+    where?: PeseeWhereInput;
+    orderBy?: PeseeOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface UserSubscription
@@ -302,6 +627,15 @@ export interface UserSubscription
   phone: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
   code: () => Promise<AsyncIterator<String>>;
+  pesees: <T = Promise<AsyncIterator<PeseeSubscription>>>(args?: {
+    where?: PeseeWhereInput;
+    orderBy?: PeseeOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface UserNullablePromise
@@ -314,27 +648,36 @@ export interface UserNullablePromise
   phone: () => Promise<String>;
   password: () => Promise<String>;
   code: () => Promise<String>;
+  pesees: <T = FragmentableArray<Pesee>>(args?: {
+    where?: PeseeWhereInput;
+    orderBy?: PeseeOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
-export interface UserConnection {
+export interface PeseeConnection {
   pageInfo: PageInfo;
-  edges: UserEdge[];
+  edges: PeseeEdge[];
 }
 
-export interface UserConnectionPromise
-  extends Promise<UserConnection>,
+export interface PeseeConnectionPromise
+  extends Promise<PeseeConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<UserEdge>>() => T;
-  aggregate: <T = AggregateUserPromise>() => T;
+  edges: <T = FragmentableArray<PeseeEdge>>() => T;
+  aggregate: <T = AggregatePeseePromise>() => T;
 }
 
-export interface UserConnectionSubscription
-  extends Promise<AsyncIterator<UserConnection>>,
+export interface PeseeConnectionSubscription
+  extends Promise<AsyncIterator<PeseeConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateUserSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<PeseeEdgeSubscription>>>() => T;
+  aggregate: <T = AggregatePeseeSubscription>() => T;
 }
 
 export interface PageInfo {
@@ -358,6 +701,60 @@ export interface PageInfoSubscription
   hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
   startCursor: () => Promise<AsyncIterator<String>>;
   endCursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface PeseeEdge {
+  node: Pesee;
+  cursor: String;
+}
+
+export interface PeseeEdgePromise extends Promise<PeseeEdge>, Fragmentable {
+  node: <T = PeseePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface PeseeEdgeSubscription
+  extends Promise<AsyncIterator<PeseeEdge>>,
+    Fragmentable {
+  node: <T = PeseeSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregatePesee {
+  count: Int;
+}
+
+export interface AggregatePeseePromise
+  extends Promise<AggregatePesee>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregatePeseeSubscription
+  extends Promise<AsyncIterator<AggregatePesee>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface UserConnection {
+  pageInfo: PageInfo;
+  edges: UserEdge[];
+}
+
+export interface UserConnectionPromise
+  extends Promise<UserConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<UserEdge>>() => T;
+  aggregate: <T = AggregateUserPromise>() => T;
+}
+
+export interface UserConnectionSubscription
+  extends Promise<AsyncIterator<UserConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateUserSubscription>() => T;
 }
 
 export interface UserEdge {
@@ -407,6 +804,56 @@ export interface BatchPayloadSubscription
   extends Promise<AsyncIterator<BatchPayload>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Long>>;
+}
+
+export interface PeseeSubscriptionPayload {
+  mutation: MutationType;
+  node: Pesee;
+  updatedFields: String[];
+  previousValues: PeseePreviousValues;
+}
+
+export interface PeseeSubscriptionPayloadPromise
+  extends Promise<PeseeSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = PeseePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = PeseePreviousValuesPromise>() => T;
+}
+
+export interface PeseeSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<PeseeSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = PeseeSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = PeseePreviousValuesSubscription>() => T;
+}
+
+export interface PeseePreviousValues {
+  id: ID_Output;
+  price: Int;
+  paymentMode: String;
+  date: DateTimeOutput;
+}
+
+export interface PeseePreviousValuesPromise
+  extends Promise<PeseePreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  price: () => Promise<Int>;
+  paymentMode: () => Promise<String>;
+  date: () => Promise<DateTimeOutput>;
+}
+
+export interface PeseePreviousValuesSubscription
+  extends Promise<AsyncIterator<PeseePreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  price: () => Promise<AsyncIterator<Int>>;
+  paymentMode: () => Promise<AsyncIterator<String>>;
+  date: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
 export interface UserSubscriptionPayload {
@@ -475,14 +922,24 @@ export type ID_Input = string | number;
 export type ID_Output = string;
 
 /*
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
+*/
+export type Int = number;
+
+/*
 The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
 */
 export type String = string;
 
 /*
-The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
+DateTime scalar input type, allowing Date
 */
-export type Int = number;
+export type DateTimeInput = Date | string;
+
+/*
+DateTime scalar output type, which is always a string
+*/
+export type DateTimeOutput = string;
 
 /*
 The `Boolean` scalar type represents `true` or `false`.
@@ -498,6 +955,10 @@ export type Long = string;
 export const models: Model[] = [
   {
     name: "User",
+    embedded: false
+  },
+  {
+    name: "Pesee",
     embedded: false
   }
 ];

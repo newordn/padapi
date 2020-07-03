@@ -6,4 +6,12 @@ type User{
     phone: String! @unique
     password: String!
     code: String
+    pesees: [Pesee!] @relation(name:"UserPesees")
+}
+type Pesee{
+    id: ID! @id
+    price: Int!
+    paymentMode:String!
+    date: DateTime! @createdAt
+    user: User! @relation(name:"UserPesees")
 }

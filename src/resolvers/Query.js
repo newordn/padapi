@@ -13,8 +13,15 @@ async function price(parent,args,context,info)
     
     return 14500
 }
+async function peseesByUser(parent,args,context,info)
+{
+    const pesees = await context.prisma.user({id:args.user}).pesees({orderBy:'id_DESC'})
+    return pesees
+    
+}
 
 module.exports={
    users,
-   price
+   price,
+   peseesByUser
 }

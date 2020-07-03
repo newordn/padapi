@@ -2,6 +2,7 @@ const typeDefs = `
 type Query{
     users: [User!]!
     price: Int!
+    peseesByUser(user:ID!): [Pesee!]!
 }
 
 type Mutation{
@@ -9,6 +10,7 @@ type Mutation{
     userSetPassword(user:ID!,password:String!): User!
     signin(phone:String!,password:String!): User!
     reset(phone:String!): User!
+    pesees(paymentMode:String!,nombre:Int!,user:ID!): [Pesee!]!
 }
 
 type User{
@@ -19,6 +21,14 @@ type User{
     phone: String!
     password: String!
     code: String
+    pesees: [Pesee!]
+}
+type Pesee{
+    id: ID!
+    price: Int!
+    paymentMode:String!
+    date: String!
+    user: User!
 }
 `
 module.exports ={

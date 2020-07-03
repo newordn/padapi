@@ -47,9 +47,21 @@ async function reset(parent,args,context,info)
     await sendMail(user.email,"Code de réinitialisation",code)
     return user
 }
+async function pesees(parent,args,context,info)
+{
+    console.log('pesees mutation')
+    const pesees = []
+    for( i=0;i<args.nombre;i++)
+    {
+    const pesee = await context.prisma.createPesee({price:14500,user:{connect:{id:args.user}},paymentMode:args.paymentMode});
+        pesees.push(pesee)
+}
+    return pesees
+}
 module.exports={
     user,
     signin,
     userSetPassword,
-    reset
+    reset,
+    pesees
 }
