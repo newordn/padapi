@@ -79,7 +79,7 @@ await context.prisma.updateManyPesees({
     },
     data: { active: false },
 })
-//await sendMail(user.email,"Recipisé d'enrolement",`Recipisé d'enrolement, Reférence ${enrolement.id}`)
+await sendMail(user.email,"Recipisé d'enrolement",`Recipisé d'enrolement, Reférence ${enrolement.id}`)
     return enrolement
 }
 module.exports={
